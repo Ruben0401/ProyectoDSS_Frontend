@@ -52,6 +52,7 @@ function Login() {
         <img src={doctoresI} alt="doctores" ></img>
         <div className="flex flex-col  max-w-2xl  items-center   text-xl p-10 font-semibold">
         <h1 className="text-justify">
+          Prueba
         Disease Safety System te brinda el apoyo necesario para poder controlar a los pacientes que pueden contraer distintas enfermedades infecciosas, 
         como COVID-19 y Viruela del Mono.
         </h1>
