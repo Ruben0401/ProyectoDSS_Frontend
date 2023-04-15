@@ -14,8 +14,9 @@ function InfectedLocation() {
     const [infectedComponents, setInfectedComponents] = useState(<></>)
 
     const loadInfectedLocations= async ()=>{
-      const response = await fetch('/infectados')
+      const response = await fetch(`${url}/infectados`)
       const data = await response.json()
+      console.log(data)
       setInfectedLocations(data)
     }
 
