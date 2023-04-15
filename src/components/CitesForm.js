@@ -4,6 +4,7 @@ import {BsFillCalendar2PlusFill} from 'react-icons/bs'
 import { useNavigate,useParams,useLocation } from 'react-router-dom'
 import {useState,useEffect} from 'react'
 import Navbar from './Navbar'
+import {url} from '../config/config'
 
 function CitesForm() {
 
@@ -35,7 +36,7 @@ function CitesForm() {
     let horascitaDetail ={}
     if(id){
     setediting(true)
-    const res=await fetch(`http://localhost:4000/citas/${id}/info`)
+    const res=await fetch(`${url}/citas/${id}/info`)
     const data= await res.json()
     citeNew = {
       fecha : data.fecha.substring(0,10),
@@ -74,14 +75,14 @@ function CitesForm() {
     }
     setloading(true);
     if (editing){
-        await fetch(`http://localhost:4000/citas/${params.id}`,{
+        await fetch(`${url}/citas/${params.id}`,{
             method: "PUT",
             headers: {"Content-Type":"application/json"},
             body: JSON.stringify(finalCite)
         })
         
     } else{
-      await fetch("http://localhost:4000/citas",
+      await fetch(`${url}/citas`,
       {
 
           method:'POST',

@@ -3,6 +3,7 @@ import Navbar from './Navbar'
 import {BiInfoCircle,BiFile,BiTrashAlt,BiLeftArrowCircle,BiPlusCircle,BiEdit} from 'react-icons/bi'
 import {useNavigate,useLocation } from 'react-router-dom'
 import {useEffect,useState} from 'react'
+import {url} from '../config/config'
 
 function Diagnostics() {
     const navigate=useNavigate();
@@ -10,14 +11,14 @@ function Diagnostics() {
     const [diagnostics, setdiagnostics] = useState([])
 
     const loadDiagnostics= async ()=>{
-      const response = await fetch(`http://localhost:4000/diagnosticos/${patient.dni_p}`)
+      const response = await fetch(`${url}/diagnosticos/${patient.dni_p}`)
       const data = await response.json()
       setdiagnostics(data)
     }
 
 
     const handleDelete=async (id) =>{
-      await fetch(`http://localhost:4000/diagnosticos/${id}`, {
+      await fetch(`${url}/diagnosticos/${id}`, {
         method: "DELETE",
       })
       setdiagnostics(diagnostics.filter(diagnostic => diagnostic.id_diagnostico !==id))

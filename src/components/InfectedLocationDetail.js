@@ -4,6 +4,7 @@ import {useLocation,useParams } from 'react-router-dom'
 import {useEffect,useState} from 'react'
 import InfectedMap from '../components/InfectedMap'
 import Navbar from './Navbar'
+import {url} from '../config/config'
 
 function InfectedLocationDetail() {
   const params = useParams();
@@ -35,7 +36,7 @@ function InfectedLocationDetail() {
   const loadInfectedPatient = async()=>{
     let id = params.id
     let infectedpatient = {}
-    const res=await fetch(`http://localhost:4000/infectados/${id}`)
+    const res=await fetch(`${url}/infectados/${id}`)
     const data= await res.json()
     infectedpatient = {
       id_infectado: data.id_infectado,
@@ -46,7 +47,7 @@ function InfectedLocationDetail() {
     }
     setInfectedPatient(infectedpatient);
 
-    const result=await fetch(`http://localhost:4000/pacientes/${infectedpatient.dni_p}`)
+    const result=await fetch(`${url}/pacientes/${infectedpatient.dni_p}`)
     const datosP = await result.json()
     let patient = {}
     patient = {

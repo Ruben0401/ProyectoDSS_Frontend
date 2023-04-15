@@ -3,6 +3,7 @@ import {BiTrashAlt,BiLeftArrowCircle,BiPlusCircle,BiEdit,BiCalendar} from 'react
 import { useNavigate,useLocation } from 'react-router-dom'
 import {useEffect,useState} from 'react'
 import Navbar from './Navbar'
+import {url} from '../config/config'
 
 function Cites() {
     const navigate=useNavigate();
@@ -10,14 +11,14 @@ function Cites() {
     const [cites, setCites] = useState([])
 
     const loadCites= async ()=>{
-      const response = await fetch(`http://localhost:4000/citas/${patient.dni_p}`)
+      const response = await fetch(`${url}/citas/${patient.dni_p}`)
       const data = await response.json()
       setCites(data)
 
     }
 
     const handleDelete=async (id) =>{
-      await fetch(`http://localhost:4000/citas/${id}`, {
+      await fetch(`${url}/citas/${id}`, {
         method: "DELETE",
       })
       setCites(cites.filter(cite => cite.id_cita !==id))

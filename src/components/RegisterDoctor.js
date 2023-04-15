@@ -3,6 +3,7 @@ import doctoresI from '../img/imgdoctores.png'
 import logo from '../img/Logo Principal.png'
 import { useNavigate } from 'react-router-dom'
 import {useState} from 'react'
+import {url} from '../config/config'
 
 function RegisterDoctor() {
   const navigate=useNavigate();
@@ -31,7 +32,7 @@ function RegisterDoctor() {
     setloading(true);
 
 
-      await fetch("http://localhost:4000/doctores",
+      await fetch(`${url}/doctores`,
       {
 
           method:'POST',

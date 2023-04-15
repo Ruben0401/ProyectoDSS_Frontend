@@ -5,6 +5,7 @@ import ImgMedico from '../img/AvatarMedico.png'
 import {useLocation,useParams } from 'react-router-dom'
 import {useEffect,useState} from 'react'
 import Navbar from './Navbar'
+import {url} from '../config/config'
 
 function MessagesDetail() {
    const {state:{doclog,roommessage}} = useLocation();
@@ -44,7 +45,7 @@ function MessagesDetail() {
           id_sala: roommessage.id_sala
         }
         setmessage(messageNew)
-        await fetch("http://localhost:4000/mensajes/d",
+        await fetch(`${url}/mensajes/d`,
         {
             method:'POST',
             headers: {'Content-type':'application/json'},
@@ -59,7 +60,7 @@ function MessagesDetail() {
       setmessage({...message,[e.target.name]: e.target.value});
    }
    const loadPatient = async()=>{
-      const res=await fetch(`http://localhost:4000/pacientes/${roommessage.dni_p}`)
+      const res=await fetch(`${url}/pacientes/${roommessage.dni_p}`)
       const data= await res.json()
       setpatient({
         dni_p : data.dni_p,
@@ -76,7 +77,7 @@ function MessagesDetail() {
     }
     const loadMessages= async ()=>{
       let id = params.id;
-      const response = await fetch(`http://localhost:4000/mensajes/${id}`)
+      const response = await fetch(`${url}/mensajes/${id}`)
       const data = await response.json()
       setmessages(data)
     }

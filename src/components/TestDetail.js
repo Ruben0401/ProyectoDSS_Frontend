@@ -4,6 +4,7 @@ import {SiMinetest} from 'react-icons/si'
 import { useParams,useLocation } from 'react-router-dom'
 import {useState,useEffect} from 'react'
 import Navbar from './Navbar'
+import {url} from '../config/config'
 
 function TestDetail() {
     
@@ -22,7 +23,7 @@ function TestDetail() {
     const loadTest = async()=>{
       let id = params.id
       let test = {}
-      const res=await fetch(`http://localhost:4000/pruebas/${id}/info`)
+      const res=await fetch(`${url}/pruebas/${id}/info`)
       const data= await res.json()
       test = {
         id_prueba : data.id_prueba,

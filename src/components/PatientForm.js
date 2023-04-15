@@ -4,6 +4,7 @@ import {CgProfile} from 'react-icons/cg'
 import { useNavigate,useParams,useLocation } from 'react-router-dom'
 import {useState,useEffect} from 'react'
 import Navbar from './Navbar'
+import {url} from '../config/config'
 
 function PatientForm() {
     const navigate=useNavigate();
@@ -34,13 +35,13 @@ function PatientForm() {
       setloading(true);
 
       if (editing){
-          await fetch(`http://localhost:4000/pacientes/${params.dni}`,{
+          await fetch(`${url}/pacientes/${params.dni}`,{
               method: "PUT",
               headers: {"Content-Type":"application/json"},
               body: JSON.stringify(patient)
           })
       } else{
-          await fetch("http://localhost:4000/pacientes",
+          await fetch(`${url}/pacientes`,
         {
 
             method:'POST',
@@ -59,7 +60,7 @@ function PatientForm() {
     }
 
     const loadPatient = async(dni)=>{
-      const res=await fetch(`http://localhost:4000/pacientes/${dni}`)
+      const res=await fetch(`${url}/pacientes/${dni}`)
       const data= await res.json()
       setpatient({
         dni_p : data.dni_p,

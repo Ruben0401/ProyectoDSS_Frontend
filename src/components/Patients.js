@@ -3,6 +3,7 @@ import Navbar from './Navbar'
 import {BiUser,BiInfoCircle,BiFile,BiEdit,BiTrashAlt,BiPlusCircle,BiTestTube,BiCalendarAlt} from 'react-icons/bi'
 import { useNavigate,useLocation } from 'react-router-dom'
 import {useEffect,useState} from 'react'
+import {url} from '../config/config'
 
 function Patients() {
 
@@ -10,14 +11,14 @@ function Patients() {
     const [patients, setpatients] = useState([])
     const {state:doclog} = useLocation();
     const loadPatients= async ()=>{
-      const response = await fetch('http://localhost:4000/pacientes')
+      const response = await fetch(`${url}/pacientes`)
       const data = await response.json()
 
       setpatients(data)
     }
 
     const handleDelete=async (dni) =>{
-      await fetch(`http://localhost:4000/pacientes/${dni}`, {
+      await fetch(`${url}/pacientes/${dni}`, {
         method: "DELETE",
       })
       setpatients(patients.filter(patient => patient.dni_p !==dni))

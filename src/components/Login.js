@@ -3,6 +3,7 @@ import doctoresI from '../img/imgdoctores.png'
 import logo from '../img/Logo Principal.png'
 import { Link,useNavigate } from 'react-router-dom'
 import {useState} from 'react'
+import {url} from '../config/config'
 
 
 function Login() {
@@ -19,7 +20,7 @@ function Login() {
     e.preventDefault();
 
     setloading(true);
-      const res = await fetch("http://localhost:4000/doctores/log",
+      const res = await fetch(`${url}/doctores/log`,
       {
 
           method:'POST',

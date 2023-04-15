@@ -2,13 +2,14 @@ import {BiInfoCircle,BiBell} from 'react-icons/bi'
 import {useNavigate,useLocation } from 'react-router-dom'
 import {useEffect,useState} from 'react'
 import Navbar from './Navbar'
+import {url} from '../config/config'
 function Notifications() {
     const navigate=useNavigate();
     const [notifications, setnotifications] = useState([])
     const {state:doclog} = useLocation();
     
     const loadNotifications= async ()=>{
-      const response = await fetch('http://localhost:4000/alertas')
+      const response = await fetch(`${url}/alertas`)
       const data = await response.json()
 
       setnotifications(data)

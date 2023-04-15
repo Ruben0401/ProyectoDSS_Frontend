@@ -1,7 +1,7 @@
 import React, { useEffect,useState } from 'react'
 import GoogleMapReact from 'google-map-react'
 import {FaMapMarkerAlt} from 'react-icons/fa'
-
+import {url} from '../config/config'
 
 const Marker = ({ text }) => 
 <div><FaMapMarkerAlt size={25} color="red"></FaMapMarkerAlt>{text}</div>;
@@ -19,7 +19,7 @@ function InfectedMap({datos}) {
     const loadinfectado = async()=>{
 
       let infectedpatient = {}
-      const res=await fetch(`http://localhost:4000/infectados/${datos.id_infectado}`)
+      const res=await fetch(`${url}/infectados/${datos.id_infectado}`)
       const data= await res.json()
       infectedpatient = {
         id_infectado: data.id_infectado,

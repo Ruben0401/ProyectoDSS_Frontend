@@ -4,6 +4,7 @@ import {BiFile} from 'react-icons/bi'
 import {AiOutlineFileText} from 'react-icons/ai'
 import { useNavigate,useParams,useLocation } from 'react-router-dom'
 import {useState,useEffect} from 'react'
+import {url} from '../config/config'
 
 
 
@@ -28,7 +29,7 @@ function DiagnosticForm() {
       let diagnosticNew = {}
       if(id){
       setediting(true)
-      const res=await fetch(`http://localhost:4000/diagnosticos/${id}/info`)
+      const res=await fetch(`${url}/diagnosticos/${id}/info`)
       const data= await res.json()
       diagnosticNew = {
         dni_p : data.dni_p,
@@ -54,13 +55,13 @@ function DiagnosticForm() {
 
       setloading(true);
       if (editing){
-        await fetch(`http://localhost:4000/diagnosticos/${params.id}`,{
+        await fetch(`${url}/diagnosticos/${params.id}`,{
               method: "PUT",
               headers: {"Content-Type":"application/json"},
               body: JSON.stringify(diagnostic)
           })
       } else{
-        await fetch("http://localhost:4000/diagnosticos",
+        await fetch(`${url}/diagnosticos`,
         {
 
             method:'POST',
@@ -71,7 +72,7 @@ function DiagnosticForm() {
         doctor ={
           dni_d : doclog.dni_d
         }
-        await fetch(`http://localhost:4000/pacientes/${patient.dni_p}/asigna`,{
+        await fetch(`${url}/pacientes/${patient.dni_p}/asigna`,{
               method: "PUT",
               headers: {"Content-Type":"application/json"},
               body: JSON.stringify(doctor)

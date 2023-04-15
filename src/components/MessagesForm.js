@@ -3,6 +3,7 @@ import {BiMessageAdd,BiMessageDetail} from 'react-icons/bi'
 import { useNavigate,useLocation } from 'react-router-dom'
 import {useState,useEffect} from 'react'
 import Navbar from './Navbar'
+import {url} from '../config/config'
 
 function MessagesForm() {
   const navigate=useNavigate();
@@ -21,7 +22,7 @@ function MessagesForm() {
 
   const loadPatients= async ()=>{
     let roommessagenew={}
-    const response = await fetch('http://localhost:4000/pacientes')
+    const response = await fetch(`${url}/pacientes`)
     const data = await response.json()
     roommessagenew = {
       ...roommessage,
@@ -43,7 +44,7 @@ function MessagesForm() {
         dni_d: doclog.dni_d,
       }
       setroommessage(roommessageDNew)
-      await fetch("http://localhost:4000/salamensajes",
+      await fetch(`${url}/salamensajes`,
       {
 
           method:'POST',

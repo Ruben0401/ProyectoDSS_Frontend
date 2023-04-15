@@ -4,6 +4,7 @@ import {SiMinetest} from 'react-icons/si'
 import { useNavigate,useParams,useLocation } from 'react-router-dom'
 import {useState,useEffect} from 'react'
 import Navbar from './Navbar'
+import {url} from '../config/config'
 
 function TestForm() {
     const navigate=useNavigate();
@@ -25,7 +26,7 @@ function TestForm() {
       let testNew = {}
       if(id){
       setediting(true)
-      const res=await fetch(`http://localhost:4000/pruebas/${id}/info`)
+      const res=await fetch(`${url}/pruebas/${id}/info`)
       const data= await res.json()
       testNew = {
         fecha_prueba : data.fecha_prueba.substring(0,10),
@@ -49,14 +50,14 @@ function TestForm() {
 
       setloading(true);
       if (editing){
-          await fetch(`http://localhost:4000/pruebas/${params.id}`,{
+          await fetch(`${url}/pruebas/${params.id}`,{
               method: "PUT",
               headers: {"Content-Type":"application/json"},
               body: JSON.stringify(test)
           })
           
       } else{
-        await fetch("http://localhost:4000/pruebas",
+        await fetch(`${url}/pruebas`,
         {
 
             method:'POST',

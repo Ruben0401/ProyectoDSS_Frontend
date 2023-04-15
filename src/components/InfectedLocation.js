@@ -1,8 +1,10 @@
 import React from 'react'
 import Navbar from './Navbar'
 import {BiMap,BiMapAlt} from 'react-icons/bi'
-import {useNavigate,useLocation,Link } from 'react-router-dom'
+import {useNavigate,useLocation } from 'react-router-dom'
 import {useEffect,useState} from 'react'
+import {url} from '../config/config'
+
 
 function InfectedLocation() {
     const navigate=useNavigate();
@@ -12,13 +14,13 @@ function InfectedLocation() {
     const [infectedComponents, setInfectedComponents] = useState(<></>)
 
     const loadInfectedLocations= async ()=>{
-      const response = await fetch('http://localhost:4000/infectados')
+      const response = await fetch('/infectados')
       const data = await response.json()
       setInfectedLocations(data)
     }
 
     const loadPatient = async (dni)=>{
-      const res=await  fetch(`http://localhost:4000/pacientes/${dni}`)
+      const res=await  fetch(`${url}/pacientes/${dni}`)
       const data= await res.json()
       setpatient(data)
       let dato = data.nombres +" "+data.apellidos

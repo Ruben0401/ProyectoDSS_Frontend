@@ -3,6 +3,7 @@ import {BiMessage,BiPlusCircle,BiMessageDots,BiTrashAlt} from 'react-icons/bi'
 import { Link,useNavigate,useLocation } from 'react-router-dom'
 import {useEffect,useState} from 'react'
 import Navbar from './Navbar'
+import {url} from '../config/config'
 
 function Messages() {
   const navigate=useNavigate();
@@ -11,20 +12,20 @@ function Messages() {
   const [roomComponents, setRoomComponents] = useState(<></>)
   
   const loadRoomMessages= async ()=>{
-    const response = await fetch('http://localhost:4000/salamensajes')
+    const response = await fetch(`${url}/salamensajes`)
     const data = await response.json()
     setroommessages(data)
   }
 
   const loadPatient = async (dni)=>{
-    const res=await fetch(`http://localhost:4000/pacientes/${dni}`)
+    const res=await fetch(`${url}/pacientes/${dni}`)
     const data= await res.json()
     
     let dato = data.nombres +" "+data.apellidos
     return dato
   }
   const handleDelete=async (id) =>{
-    await fetch(`http://localhost:4000/salamensajes/${id}`, {
+    await fetch(`${url}/salamensajes/${id}`, {
       method: "DELETE",
     })
     setroommessages(roommessages.filter(roommessage => roommessage.id_sala !==id))

@@ -4,6 +4,7 @@ import {useLocation,useParams} from 'react-router-dom'
 import {useEffect,useState} from 'react'
 import Map from '../components/Map'
 import Navbar from './Navbar'
+import {url} from '../config/config'
 function NotificationDetail() {
     const tab = <>&nbsp;</>;
     const {state:notification} = useLocation();
@@ -14,7 +15,7 @@ function NotificationDetail() {
 
     const loadNotifications= async ()=>{
       let id = params.id
-      const response = await fetch(`http://localhost:4000/alertaxusuarios/${id}`)
+      const response = await fetch(`${url}/alertaxusuarios/${id}`)
       const data = await response.json()
 
       setnotificationxusers(data)

@@ -4,6 +4,8 @@ import {CgProfile} from 'react-icons/cg'
 import { useNavigate,useParams,useLocation  } from 'react-router-dom'
 import {useState,useEffect} from 'react'
 import Navbar from './Navbar'
+import {url} from '../config/config'
+
 function PatientDetail() {
     const navigate=useNavigate();
     const params = useParams();
@@ -25,7 +27,7 @@ function PatientDetail() {
     }) 
 
     const loadPatient = async(dni)=>{
-      const res=await fetch(`http://localhost:4000/pacientes/${dni}`)
+      const res=await fetch(`${url}/pacientes/${dni}`)
       const data= await res.json()
       
       setpatient({

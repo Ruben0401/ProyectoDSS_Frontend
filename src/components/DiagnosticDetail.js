@@ -4,6 +4,7 @@ import {BiFile} from 'react-icons/bi'
 import {AiOutlineFileText} from 'react-icons/ai'
 import { useNavigate,useParams,useLocation } from 'react-router-dom'
 import {useState,useEffect} from 'react'
+import {url} from '../config/config'
 
 function DiagnosticDetail() {
     const navigate=useNavigate();
@@ -26,7 +27,7 @@ function DiagnosticDetail() {
     const loadDiagnostic = async()=>{
       let id = params.id
       let diagnostic = {}
-      const res=await fetch(`http://localhost:4000/diagnosticos/${id}/info`)
+      const res=await fetch(`${url}/diagnosticos/${id}/info`)
       const data= await res.json()
       diagnostic = {
         id_diagnostico: data.id_diagnostico,

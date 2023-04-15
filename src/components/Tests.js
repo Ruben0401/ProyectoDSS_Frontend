@@ -3,6 +3,7 @@ import {BiTrashAlt,BiLeftArrowCircle,BiPlusCircle,BiTestTube,BiInfoCircle,BiEdit
 import {useNavigate,useLocation } from 'react-router-dom'
 import {useEffect,useState} from 'react'
 import Navbar from './Navbar'
+import {url} from '../config/config'
 
 function Tests() {
     const navigate=useNavigate();
@@ -10,14 +11,14 @@ function Tests() {
     const [tests, settests] = useState([])
 
     const loadTests= async ()=>{
-      const response = await fetch(`http://localhost:4000/pruebas/${patient.dni_p}`)
+      const response = await fetch(`${url}/pruebas/${patient.dni_p}`)
       const data = await response.json()
       settests(data)
 
     }
 
     const handleDelete=async (id) =>{
-      await fetch(`http://localhost:4000/pruebas/${id}`, {
+      await fetch(`${url}/pruebas/${id}`, {
         method: "DELETE",
       })
       settests(tests.filter(test => test.id_prueba !==id))
