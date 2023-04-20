@@ -9,6 +9,9 @@ function NotificationDetail() {
     const tab = <>&nbsp;</>;
     const {state:notification} = useLocation();
     const params = useParams();
+     
+    const [fechaactual, setfechaactual] = useState()
+    const [horaactual, sethoraactual] = useState()
     const [notificationComponentsa, setNotificationComponentsa] = useState(<></>)
     const [notificationComponentsb, setNotificationComponentsb] = useState(<></>)
     const [notificationxusers, setnotificationxusers] = useState([])
@@ -17,9 +20,10 @@ function NotificationDetail() {
       let id = params.id
       const response = await fetch(`${url}/alertaxusuarios/${id}`)
       const data = await response.json()
-
+      let fechita = new Date(Date.parse(notification.fecha));
+      setfechaactual(fechita.toLocaleDateString())
+      sethoraactual(fechita.toLocaleTimeString())
       setnotificationxusers(data)
-
     }
 
     const loadNotifiacionComponenta = async(data)=>{
@@ -77,7 +81,7 @@ function NotificationDetail() {
             <div className=" flex font-medium text-xl ">
                 El paciente{tab}{notificationComponentsa}{tab}
                 se puso en contacto cercano con paciente{tab}{notificationComponentsb}{tab}
-                a las {notification.fecha.substring(11,13)}:{notification.fecha.substring(14,16)} Horas el dia {notification.fecha.substring(8,10)}/{notification.fecha.substring(5,7)}/{notification.fecha.substring(0,4)}
+                a las {horaactual} Horas el dia {fechaactual}
             </div>
             <br>
             </br>
