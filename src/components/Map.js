@@ -14,7 +14,7 @@ function Map({datos}) {
           lat: +datos[0]["latitud"],
           lng: +datos[0]["longitud"]
         },
-        zoom: 20
+        zoom: 22
       })
       
   return (

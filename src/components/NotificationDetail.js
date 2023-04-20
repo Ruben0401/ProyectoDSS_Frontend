@@ -6,14 +6,13 @@ import Map from '../components/Map'
 import Navbar from './Navbar'
 import {url} from '../config/config'
 function NotificationDetail() {
-    const tab = <>&nbsp;</>;
     const {state:notification} = useLocation();
     const params = useParams();
      
     const [fechaactual, setfechaactual] = useState()
     const [horaactual, sethoraactual] = useState()
-    const [notificationComponentsa, setNotificationComponentsa] = useState(<></>)
-    const [notificationComponentsb, setNotificationComponentsb] = useState(<></>)
+    const [pacienteI, setpacienteI] = useState()
+    const [pacienteS, setpacienteS] = useState()
     const [notificationxusers, setnotificationxusers] = useState([])
 
     const loadNotifications= async ()=>{
@@ -21,40 +20,24 @@ function NotificationDetail() {
       const response = await fetch(`${url}/alertaxusuarios/${id}`)
       const data = await response.json()
       let fechita = new Date(Date.parse(notification.fecha));
+      data.sort(function(a, b){
+        return a.id_detallealerta - b.id_detallealerta;
+      });
       setfechaactual(fechita.toLocaleDateString())
       sethoraactual(fechita.toLocaleTimeString())
+      const dato = await loadPatient(data[1].dni_p)
+      const datoS = await loadPatient(data[0].dni_p)
+      setpacienteI(dato)
+      setpacienteS(datoS)
       setnotificationxusers(data)
     }
-
-    const loadNotifiacionComponenta = async(data)=>{
+    const loadPatient = async (dni)=>{
+      const res=await fetch(`${url}/pacientes/${dni}`)
+      const data= await res.json()
       
-      let components = await Promise.all(data.map(async(notificationxuser) => {
-        return (
-        <div key={notificationxuser.id_detallealerta}
-         >{ (notificationxuser.id_detallealerta === 1) ? notificationxuser.dni_p : ""}</div>
-      )
-      }
-      ))
-      setNotificationComponentsa(components)
+      let dato = data.nombres +" "+data.apellidos
+      return dato
     }
-
-    
-    const loadNotifiacionComponentb = async(data)=>{
-      
-      let components = await Promise.all(data.map(async(notificationxuser) => {
-        return (
-        <div key={notificationxuser.id_detallealerta}
-         >{ (notificationxuser.id_detallealerta === 2) ? notificationxuser.dni_p : ""}</div>
-      )
-      }
-      ))
-      setNotificationComponentsb(components)
-    }
-    useEffect(()=>{
-      loadNotifiacionComponenta(notificationxusers)
-      loadNotifiacionComponentb(notificationxusers)
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[notificationxusers])
     useEffect(()=>{
       loadNotifications()
       // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -79,9 +62,7 @@ function NotificationDetail() {
         </div>
         <div className="py-5">
             <div className=" flex font-medium text-xl ">
-                El paciente{tab}{notificationComponentsa}{tab}
-                se puso en contacto cercano con paciente{tab}{notificationComponentsb}{tab}
-                a las {horaactual} Horas el dia {fechaactual}
+                El paciente {pacienteI} se puso en contacto cercano con paciente {pacienteS} a las {horaactual} Horas el dia {fechaactual}
             </div>
             <br>
             </br>
@@ -89,8 +70,7 @@ function NotificationDetail() {
                 Resultado:
             </div>
             <div className=" flex font-medium text-xl ">
-                El paciente{tab}{notificationComponentsa}{tab}
-                puede contraer la enfermedad del paciente{tab}{notificationComponentsb}{tab}
+                El paciente {pacienteI} puede contraer la enfermedad del paciente {pacienteS} 
             </div>
         </div>
         <div className="w-full">
