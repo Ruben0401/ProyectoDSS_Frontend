@@ -62,7 +62,7 @@ function NotificationDetail() {
         </div>
         <div className="py-5">
             <div className=" flex font-medium text-xl ">
-                El paciente {pacienteI} se puso en contacto cercano con paciente {pacienteS} a las {horaactual} Horas el dia {fechaactual}
+                El paciente {pacienteS} se puso en contacto cercano con paciente {pacienteI} a las {horaactual} Horas el dia {fechaactual}
             </div>
             <br>
             </br>
@@ -70,7 +70,7 @@ function NotificationDetail() {
                 Resultado:
             </div>
             <div className=" flex font-medium text-xl ">
-                El paciente {pacienteI} puede contraer la enfermedad del paciente {pacienteS} 
+                El paciente {pacienteS} puede contraer la enfermedad del paciente {pacienteI}
             </div>
         </div>
         <div className="w-full">
