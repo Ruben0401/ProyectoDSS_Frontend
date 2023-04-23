@@ -9,6 +9,7 @@ import {Contexts} from './../context/Contexts'
 
 function Login() {
   const navigate = useNavigate();
+  const [wronglog, setwronglog] = useState(false); 
   const {setuser,setlogged} = useContext(Contexts) 
   const [loading, setloading] = useState(false);
   const [userLog, setuserLog] = useState({
@@ -50,6 +51,7 @@ function Login() {
       }
       else {
         console.log("nada")
+        setwronglog(true)
       }
       setloading(false);
 
@@ -57,6 +59,7 @@ function Login() {
 
   const handleChange = e=>{
     setuserLog({...userLog,[e.target.name]: e.target.value});
+    setwronglog(false)
   }
   return (
     <div className="flex" >
@@ -91,8 +94,12 @@ function Login() {
                   ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-black
                    dark:placeholder:text-gray-400  [&:not([data-te-input-placeholder-active])]:placeholder overflow-auto shadow text-center "
                   placeholder="Ingresa tu Contraseña"  name="password_d" onChange={handleChange} required/>
+                {
+                  !wronglog ?<></>:
+                  <h1 className="font-semibold text-lg text-center text-red-600 px-1" >Usuario o Contraseña incorrectos</h1>
+                }
             </div>
-            <div className="p-10">
+            <div className="p-2">
               <div className="p-5 flex justify-center flex-col items-center">
                 <button type="submit" className="bg-[#1C1B25] hover:bg-[#3693E9] text-white font-bold py-2 px-10 rounded-full" >
                 { loading ? "Cargando.." : "Iniciar Sesión" }</button>

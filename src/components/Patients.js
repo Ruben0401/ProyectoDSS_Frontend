@@ -27,8 +27,6 @@ function Patients() {
     const handleFilterAll=async () =>{
       loadPatients()
     }
-
-
     useEffect(()=>{
       if (!logged) {
         navigate('/')
