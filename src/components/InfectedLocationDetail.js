@@ -1,12 +1,14 @@
 import React from 'react'
 import {BiLeftArrowCircle,BiMapAlt} from 'react-icons/bi'
-import {useLocation,useParams } from 'react-router-dom'
-import {useEffect,useState} from 'react'
+import {useLocation,useParams,useNavigate } from 'react-router-dom'
+import {useEffect,useState,useContext} from 'react'
 import InfectedMap from '../components/InfectedMap'
-import Navbar from './Navbar'
 import {url} from '../config/config'
+import {Contexts} from './../context/Contexts'
 
 function InfectedLocationDetail() {
+  const {logged} = useContext(Contexts)
+  const navigate=useNavigate();
   const params = useParams();
   const {state:infectedlocation} = useLocation();
   const [infectedpatient, setInfectedPatient] = useState({
@@ -66,17 +68,21 @@ function InfectedLocationDetail() {
   }
 
   useEffect(()=> {
-    loadInfectedPatient()
+    if (!logged) {
+      navigate('/')
+    }
+    else{
+      loadInfectedPatient()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
   return (
     <div>
-    <Navbar dato={true}/>
     
     <div className=" p-5 flex justify-center flex-col items-center">
       <div className='w-full'>
       <div className=" flex items-center gap-2 font-semibold text-xl font-[inter] py-2">
-      <BiMapAlt size={40} color={"#1294B0"} ></BiMapAlt>  
+      <BiMapAlt size={40} color={"#3693E9"} ></BiMapAlt>  
       Localización
       </div>
       <div className="box-table ">
@@ -91,7 +97,7 @@ function InfectedLocationDetail() {
               
             </div>
             <button onClick={() => (window.history.back())}>
-              <BiLeftArrowCircle size={40} color={"#1294B0"} ></BiLeftArrowCircle>
+              <BiLeftArrowCircle size={40} color={"#3693E9"} ></BiLeftArrowCircle>
             </button>
         </div>
         <div className="w-full">

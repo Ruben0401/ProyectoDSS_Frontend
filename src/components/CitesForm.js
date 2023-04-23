@@ -2,14 +2,13 @@ import React from 'react'
 import {BiCalendar} from 'react-icons/bi'
 import {BsFillCalendar2PlusFill} from 'react-icons/bs'
 import { useNavigate,useParams,useLocation } from 'react-router-dom'
-import {useState,useEffect} from 'react'
-import Navbar from './Navbar'
+import {useState,useEffect,useContext} from 'react'
 import {url} from '../config/config'
+import {Contexts} from './../context/Contexts'
 
 function CitesForm() {
-
+  const {user,logged} = useContext(Contexts)
   const navigate=useNavigate();
-  const tab = <>&nbsp;</>;
   const params = useParams();
   const [loading, setloading] = useState(false);
   const [editing, setediting] = useState(false);
@@ -28,7 +27,7 @@ function CitesForm() {
   })
 
 
-  const {state:{patient,doclog}} = useLocation();
+  const {state:patient} = useLocation();
 
   const loadCite = async()=>{
     let id = params.id
@@ -58,7 +57,7 @@ function CitesForm() {
       citeNew = {
         ...cite,
         dni_p: patient.dni_p,
-        dni_d: doclog.dni_d
+        dni_d: user.dni_d
       }
     }
     setCite(citeNew)
@@ -91,7 +90,7 @@ function CitesForm() {
       })
     }
     setloading(false);
-    navigate('/citas/',{state:{patient,doclog}})
+    navigate('/citas/',{state:patient})
 
   }
 
@@ -108,23 +107,27 @@ function CitesForm() {
   }
 
   useEffect(()=> {
-    loadCite();
+    if (!logged) {
+      navigate('/')
+    }
+    else{
+      loadCite()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
   return (
     <div>
-    <Navbar  dato={true}/>
       <div className=" p-5 flex justify-center flex-col items-center">
       <div>
       <div className=" flex items-center gap-2 font-semibold text-xl font-[inter] py-3">
-      <BiCalendar size={40} color={"#1294B0"} ></BiCalendar>  
+      <BiCalendar size={40} color={"#3693E9"} ></BiCalendar>  
       {editing ? "Modificar Prueba":"Formulario de Registro de Citas"}
       </div>
       <div className="box-table">
       <form onSubmit={handleSubmit}>
         <div className="p-4 flex justify-center items-center flex-col px-56">
-        <BsFillCalendar2PlusFill size={120} color={"#1294B0"} ></BsFillCalendar2PlusFill>
+        <BsFillCalendar2PlusFill size={120} color={"#3693E9"} ></BsFillCalendar2PlusFill>
 
         <h1 className="p-3 text-base font-semibold tracking-wide text-center font-sans text-black" >Fecha de Cita</h1>
         <div className="mb-3 xl:w-96">
@@ -143,7 +146,7 @@ function CitesForm() {
                ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-black
              dark:placeholder:text-black [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0 overflow-auto shadow"
               name="dni_p" onChange={handleChange} value={cite.dni_p} required disabled>
-                <option value={patient.dni_p}>{patient.nombres}{tab}{patient.apellidos}</option>
+                <option value={patient.dni_p}>{patient.nombres} {patient.apellidos}</option>
               </select>
             </div>
           </div>
@@ -256,11 +259,11 @@ function CitesForm() {
 
         </div>
         <div className="flex justify-between py-2">
-        <button type="submit" className="bg-[#1294B0] hover:bg-blue-500 text-white font-bold py-2 px-10 rounded-full disabled:bg-gray-400"  
+        <button type="submit" className="bg-[#3693E9] hover:bg-[#3fa2ff] text-white font-bold py-2 px-10 rounded-full disabled:bg-gray-400"  
           disabled={!cite.fecha || !horascita.hora_inicio || !horascita.hora_fin}>
         { loading ? "Cargando.." : "Guardar" }
         </button>
-        <button type="button" className="bg-[#1294B0] hover:bg-blue-500 text-white font-bold py-2 px-10 rounded-full" onClick={() => (window.history.back())}>
+        <button type="button" className="bg-[#3693E9] hover:bg-[#3fa2ff] text-white font-bold py-2 px-10 rounded-full" onClick={() => (window.history.back())}>
             Cancelar
         </button>
         </div>

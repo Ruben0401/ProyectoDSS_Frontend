@@ -1,13 +1,15 @@
-import React from 'react'
-import doctoresI from '../img/imgdoctores.png'
-import logo from '../img/Logo Principal.png'
+import React,{useContext} from 'react'
+import doctoresI from '../img/imgdoctoresNew.png'
+import logo from '../img/LogoParaLanding.png'
 import { Link,useNavigate } from 'react-router-dom'
 import {useState} from 'react'
 import {url} from '../config/config'
+import {Contexts} from './../context/Contexts'
 
 
 function Login() {
   const navigate = useNavigate();
+  const {setuser,setlogged} = useContext(Contexts) 
   const [loading, setloading] = useState(false);
   const [userLog, setuserLog] = useState({
 
@@ -29,18 +31,27 @@ function Login() {
       })
       const {status} = await res
       const data = await res.json()
-      let doclog= {}
-      doclog = data
-
-      if (status === 404) {
-        console.log("nada")
+      if (status === 200) {
+        setlogged(true);
+        let us = {
+          dni_d : data.dni_d,
+          nombres : data.nombres, 
+          apellidos : data.apellidos, 
+          fecha_nacimiento : data.fecha_nacimiento, 
+          sexo : data.sexo, 
+          edad : data.edad, 
+          telefono : data.telefono, 
+          correo : data.correo, 
+          especialidad : data.especialidad, 
+          password_d : data.password_d,
+        }
+        setuser(us);
+        navigate('/principal')
       }
       else {
-        navigate('/principal',{state:doclog})
+        console.log("nada")
       }
-
-
-    setloading(false);
+      setloading(false);
 
   }
 
@@ -53,7 +64,6 @@ function Login() {
         <img src={doctoresI} alt="doctores" ></img>
         <div className="flex flex-col  max-w-2xl  items-center   text-xl p-10 font-semibold">
         <h1 className="text-justify">
-          Prueba
         Disease Safety System te brinda el apoyo necesario para poder controlar a los pacientes que pueden contraer distintas enfermedades infecciosas, 
         como COVID-19 y Viruela del Mono.
         </h1>
@@ -61,8 +71,11 @@ function Login() {
       </div>
       <div className="bg-white w-1/2 h-screen p-5 items-center">
         <div className="flex flex-col items-center">
+          <div>
+          <img src={logo} alt="logo" className="w-44 h-44"  ></img>  
+          </div>
           <form onSubmit={handleSubmit}> 
-          <img src={logo} alt="logo" className="h-44" ></img>
+
             <div className="py-20">
               <h1 className="font-semibold text-xl text-center text-black p-5">Correo</h1>
               <input
@@ -81,12 +94,12 @@ function Login() {
             </div>
             <div className="p-10">
               <div className="p-5 flex justify-center flex-col items-center">
-                <button type="submit" className="bg-[#1C1B25] hover:bg-[#1294B0] text-white font-bold py-2 px-10 rounded-full" >
+                <button type="submit" className="bg-[#1C1B25] hover:bg-[#3693E9] text-white font-bold py-2 px-10 rounded-full" >
                 { loading ? "Cargando.." : "Iniciar Sesión" }</button>
               </div>
               <div className="flex justify-center items-center">
                 <h1 className="font-semibold text-xl text-center text-black px-1" >¿Necesitas Registrarte?</h1>
-                <Link to={"/registrarse/new"} className="font-semibold text-xl text-center text-[#1294B0] px-1 hover:text-blue-400" >Hazlo Aquí</Link>
+                <Link to={"/registrarse/new"} className="font-semibold text-xl text-center text-[#3693E9] px-1 hover:text-blue-600" >Hazlo Aquí</Link>
               </div>
             </div>
           </form>

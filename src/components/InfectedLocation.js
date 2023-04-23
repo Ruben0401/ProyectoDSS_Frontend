@@ -1,16 +1,15 @@
 import React from 'react'
-import Navbar from './Navbar'
 import {BiMap,BiMapAlt} from 'react-icons/bi'
-import {useNavigate,useLocation } from 'react-router-dom'
-import {useEffect,useState} from 'react'
+import {useNavigate } from 'react-router-dom'
+import {useEffect,useState,useContext} from 'react'
 import {url} from '../config/config'
+import {Contexts} from './../context/Contexts'
 
 
 function InfectedLocation() {
+    const {logged} = useContext(Contexts)
     const navigate=useNavigate();
     const [infectedlocations, setInfectedLocations] = useState([])
-    const [patient, setpatient] = useState([])
-    const {state:doclog} = useLocation();
     const [infectedComponents, setInfectedComponents] = useState(<></>)
 
     const loadInfectedLocations= async ()=>{
@@ -23,7 +22,6 @@ function InfectedLocation() {
     const loadPatient = async (dni)=>{
       const res=await  fetch(`${url}/pacientes/${dni}`)
       const data= await res.json()
-      setpatient(data)
       let dato = data.nombres +" "+data.apellidos
       return dato
     }
@@ -44,28 +42,37 @@ function InfectedLocation() {
         setInfectedComponents(components)
     }
     useEffect(()=>{
-      loadInfectedComponent(infectedlocations)
+      if (!logged) {
+        navigate('/')
+      }
+      else{
+        loadInfectedComponent(infectedlocations)
+      }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     },[infectedlocations])
 
     useEffect(()=>{
-      loadInfectedLocations()
+      if (!logged) {
+        navigate('/')
+      }
+      else{
+        loadInfectedLocations()
+      }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
   return (
     <div>
-    <Navbar/>
     <div className=" p-5 flex justify-center flex-col items-center">
     <div>
     <div className=" flex items-center gap-2 font-semibold text-xl  py-3">
-    <BiMap size={40} color={"#1294B0"} ></BiMap>  
+    <BiMap size={40} color={"#3693E9"} ></BiMap>  
     Control de Pacientes Contagiados
     </div>
     <div className="box-table ">
       
       <div className="overflow-auto rounded-lg shadow ">
         <table>
-          <thead className="bg-[#1294B0] border-b-2 border-gray-200">
+          <thead className="bg-[#3693E9] border-b-2 border-gray-200">
             <tr>
               <th className="p-3 text-base font-bold tracking-wide text-center  text-white">DNI</th>
               <th className="p-3 text-base font-bold tracking-wide text-center  text-white">Nombre Completo</th>

@@ -1,16 +1,16 @@
-import React from 'react'
-import Navbar from './Navbar'
+import React,{useContext}  from 'react'
 import {BiFile} from 'react-icons/bi'
 import {AiOutlineFileText} from 'react-icons/ai'
 import { useNavigate,useParams,useLocation } from 'react-router-dom'
 import {useState,useEffect} from 'react'
 import {url} from '../config/config'
+import {Contexts} from './../context/Contexts'
 
 
 
 function DiagnosticForm() {
+    const {user,logged} = useContext(Contexts)
     const navigate=useNavigate();
-    const tab = <>&nbsp;</>;
     const params = useParams();
     const [loading, setloading] = useState(false);
     const [editing, setediting] = useState(false);
@@ -22,7 +22,7 @@ function DiagnosticForm() {
       estado : '', 
       descripcion : '',
     }) 
-    const {state:{patient,doclog}} = useLocation();
+    const {state:patient} = useLocation();
 
     const loadDiagnostic = async()=>{
       let id = params.id
@@ -38,13 +38,12 @@ function DiagnosticForm() {
         estado : data.estado, 
         descripcion : data.descripcion, 
       }
-      
-
       }else{
         diagnosticNew = {
           ...diagnostic,
           fecha:obtenerFecha(),
-          dni_p: patient.dni_p
+          dni_p: patient.dni_p,
+          enfermedad:'COVID-19',
         }
       }
       setdiagnostic(diagnosticNew)
@@ -70,7 +69,7 @@ function DiagnosticForm() {
         })
         let doctor ={}
         doctor ={
-          dni_d : doclog.dni_d
+          dni_d : user.dni_d
         }
         await fetch(`${url}/pacientes/${patient.dni_p}/asigna`,{
               method: "PUT",
@@ -79,7 +78,7 @@ function DiagnosticForm() {
         })
       }
       setloading(false);
-      navigate('/diagnosticos/',{state:{patient,doclog}})
+      navigate('/diagnosticos/',{state:patient})
 
     }
 
@@ -103,7 +102,12 @@ function DiagnosticForm() {
     }
 
     useEffect(()=> {
-      loadDiagnostic();
+      if (!logged) {
+        navigate('/')
+      }
+      else{
+        loadDiagnostic();
+      }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
@@ -112,17 +116,16 @@ function DiagnosticForm() {
     
   return (
     <div>
-    <Navbar  dato={true}/>
     <div className=" p-5 flex justify-center flex-col items-center">
         <div>
         <div className=" flex items-center gap-2 font-semibold text-xl font-[inter] py-3">
-        <BiFile size={40} color={"#1294B0"} ></BiFile>  
+        <BiFile size={40} color={"#3693E9"} ></BiFile>  
         {editing ? "Modificar Diagnóstico":"Formulario de Diagnósticos"}
         </div>
         <div className="box-table">
         <form onSubmit={handleSubmit}>
           <div className="p-4 flex justify-center items-center flex-col px-56">
-          <AiOutlineFileText size={120} color={"#1294B0"} ></AiOutlineFileText>
+          <AiOutlineFileText size={120} color={"#3693E9"} ></AiOutlineFileText>
 
           <h1 className="p-3 text-base font-semibold tracking-wide text-center font-sans text-black" >Fecha de Registro</h1>
           <div className="mb-3 xl:w-96">
@@ -141,7 +144,7 @@ function DiagnosticForm() {
                  ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-black
                dark:placeholder:text-black [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0 overflow-auto shadow" 
                 name="dni_p" onChange={handleChange} value={diagnostic.dni_p} required disabled>
-                  <option value={patient.dni_p}>{patient.nombres}{tab}{patient.apellidos}</option>
+                  <option value={patient.dni_p}>{patient.nombres} {patient.apellidos}</option>
                 </select>
               </div>
             </div>
@@ -152,10 +155,8 @@ function DiagnosticForm() {
                 <select className="peer block min-h-[auto] w-full rounded-lg border-0 bg-gray-100 py-[0.32rem] px-3 leading-[1.6] outline-none transition-all duration-200 
                  ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-black
                dark:placeholder:text-black [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0 overflow-auto shadow" 
-                name="enfermedad" onChange={handleChange} value={diagnostic.enfermedad} required >
-                  <option value=""> -- Selecciona Enfermedad -- </option>
+                name="enfermedad" onChange={handleChange} value={diagnostic.enfermedad} required disabled>
                   <option value="COVID-19">COVID-19</option>
-                  <option value="Viruela del Mono">Viruela del Mono</option>
                 </select>
               </div>
             </div>
@@ -180,11 +181,11 @@ function DiagnosticForm() {
       
           </div>
           <div className="flex justify-between py-2">
-          <button className="bg-[#1294B0] hover:bg-blue-500 text-white font-bold py-2 px-10 rounded-full disabled:bg-gray-400" type="submit" 
-          disabled={!diagnostic.dni_p || !diagnostic.descripcion || !diagnostic.enfermedad || !diagnostic.estado || !diagnostic.fecha  }>
+          <button className="bg-[#3693E9] hover:bg-[#3fa2ff] text-white font-bold py-2 px-10 rounded-full disabled:bg-gray-400" type="submit" 
+          disabled={!diagnostic.dni_p || !diagnostic.descripcion || !diagnostic.estado || !diagnostic.fecha  }>
             { loading ? "Cargando.." : "Guardar" }
           </button>
-          <button type="button" className="bg-[#1294B0] hover:bg-blue-500 text-white font-bold py-2 px-10 rounded-full" onClick={() => (window.history.back())}>
+          <button type="button" className="bg-[#3693E9] hover:bg-[#3fa2ff] text-white font-bold py-2 px-10 rounded-full" onClick={() => navigate('/diagnosticos/',{state:patient})}>
               Cancelar
           </button>
           </div>

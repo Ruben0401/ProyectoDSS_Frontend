@@ -1,14 +1,15 @@
 import React from 'react'
 import {BiBell,BiLeftArrowCircle} from 'react-icons/bi'
-import {useLocation,useParams} from 'react-router-dom'
-import {useEffect,useState} from 'react'
+import {useLocation,useParams,useNavigate} from 'react-router-dom'
+import {useEffect,useState,useContext} from 'react'
 import Map from '../components/Map'
-import Navbar from './Navbar'
 import {url} from '../config/config'
+import {Contexts} from './../context/Contexts'
 function NotificationDetail() {
+    const navigate = useNavigate();
+    const {logged} = useContext(Contexts)
     const {state:notification} = useLocation();
     const params = useParams();
-     
     const [fechaactual, setfechaactual] = useState()
     const [horaactual, sethoraactual] = useState()
     const [pacienteI, setpacienteI] = useState()
@@ -39,17 +40,21 @@ function NotificationDetail() {
       return dato
     }
     useEffect(()=>{
-      loadNotifications()
+      if (!logged) {
+        navigate('/')
+      }
+      else{
+        loadNotifications()
+      }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
   return (
     <div>
-      <Navbar  dato={true}/>
     
     <div className=" p-5 flex justify-center flex-col items-center">
       <div>
       <div className=" flex items-center gap-2 font-bold text-xl py-2">
-      <BiBell size={40} color={"#1294B0"} ></BiBell>  
+      <BiBell size={40} color={"#3693E9"} ></BiBell>  
       Alerta
       </div>
       <div className="box-table ">
@@ -57,7 +62,7 @@ function NotificationDetail() {
             <div>
             </div>
             <button onClick={() => (window.history.back())}>
-              <BiLeftArrowCircle size={40} color={"#1294B0"} ></BiLeftArrowCircle>
+              <BiLeftArrowCircle size={40} color={"#3693E9"} ></BiLeftArrowCircle>
             </button>
         </div>
         <div className="py-5">

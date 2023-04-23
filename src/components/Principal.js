@@ -1,12 +1,19 @@
-import React from 'react'
-import Navbar from './Navbar'
-import { useLocation } from 'react-router-dom'
+import React,{useContext,useEffect} from 'react'
+import {useNavigate} from 'react-router-dom'
+import {Contexts} from './../context/Contexts'
 function Principal() {
-  const {state:doclog} = useLocation();
+  const navigate = useNavigate();
+  const {user,logged} = useContext(Contexts)
+  useEffect(()=>{
+    if (!logged) {
+      navigate('/')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[])
   return (
     
-    <div><Navbar/>
-    <div className="font-text-welcome py-5 uppercase">Bienvenido Dr. {doclog.nombres}</div>
+    <div>
+    <div className="font-text-welcome py-5 uppercase">Bienvenido Dr. {user.nombres} {user.apellidos}</div>
     </div>
   )
 }

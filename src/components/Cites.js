@@ -1,13 +1,15 @@
 import React from 'react'
 import {BiTrashAlt,BiLeftArrowCircle,BiPlusCircle,BiEdit,BiCalendar} from 'react-icons/bi'
 import { useNavigate,useLocation } from 'react-router-dom'
-import {useEffect,useState} from 'react'
-import Navbar from './Navbar'
+import {useEffect,useState,useContext} from 'react'
 import {url} from '../config/config'
+import {Contexts} from './../context/Contexts'
+
 
 function Cites() {
     const navigate=useNavigate();
-    const {state:{patient,doclog}} = useLocation();
+    const {logged} = useContext(Contexts)
+    const {state:patient} = useLocation();
     const [cites, setCites] = useState([])
 
     const loadCites= async ()=>{
@@ -25,26 +27,29 @@ function Cites() {
     }
 
     useEffect(()=>{
+      if (!logged) {
+        navigate('/')
+      }
+      else{
         loadCites()
+      }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
   return (
-    <div>
-    <Navbar dato={true}/>
-  
+  <div>
   <div className=" p-5 flex justify-center flex-col items-center">
     <div>
     <div className=" flex items-center gap-2 font-semibold text-xl font-[inter] py-3">
-    <BiCalendar size={40} color={"#1294B0"} ></BiCalendar>  
+    <BiCalendar size={40} color={"#3693E9"} ></BiCalendar>  
     Citas del Paciente
     </div>
     <div className="box-table ">
         <div className="flex justify-between py-2 items-center">
-          <button onClick={() => navigate('/citas/new',{state:{patient,doclog}})}>
-            <BiPlusCircle size={40} color={"#1294B0"} ></BiPlusCircle>
+          <button onClick={() => navigate('/citas/new',{state:patient})}>
+            <BiPlusCircle size={40} color={"#3693E9"} ></BiPlusCircle>
           </button>
-          <button onClick={() => navigate('/pacientes',{state:doclog})}>
-            <BiLeftArrowCircle size={40} color={"#1294B0"} ></BiLeftArrowCircle>
+          <button onClick={() => navigate('/pacientes')}>
+            <BiLeftArrowCircle size={40} color={"#3693E9"} ></BiLeftArrowCircle>
           </button>
         </div>
       <div className="flex justify-between py-2 items-center">
@@ -57,7 +62,7 @@ function Cites() {
       
       <div className="overflow-auto rounded-lg shadow ">
         <table>
-          <thead className="bg-[#1294B0] border-b-2 border-gray-200">
+          <thead className="bg-[#3693E9] border-b-2 border-gray-200">
             <tr>
               <th className="p-3 text-base font-bold tracking-wide text-center font-sans text-white">Fecha de Cita</th>
               <th className="p-3 text-base font-bold tracking-wide text-center font-sans text-white">Hora de Inicio</th>
@@ -76,7 +81,7 @@ function Cites() {
                 <td className="p-3 text-base text-black tracking-wide text-center items-center font-semibold">{cite.hora_fin.substring(0,5)}</td>
                 <td className="p-3">
                 <div className="flex items-center justify-center">
-                <button onClick={ () => navigate(`/citas/${cite.id_cita}/edit`,{state:{patient,doclog}})}> <BiEdit size={30}></BiEdit></button>
+                <button onClick={ () => navigate(`/citas/${cite.id_cita}/edit`,{state:patient})}> <BiEdit size={30}></BiEdit></button>
                 <button onClick={()=> handleDelete(cite.id_cita)}> <BiTrashAlt   size={30}></BiTrashAlt>   </button> 
                 </div>
                 </td>

@@ -1,14 +1,14 @@
 import React from 'react'
 import {BiMessageAdd,BiMessageDetail} from 'react-icons/bi'
-import { useNavigate,useLocation } from 'react-router-dom'
-import {useState,useEffect} from 'react'
-import Navbar from './Navbar'
+import { useNavigate } from 'react-router-dom'
+import {useState,useEffect,useContext} from 'react'
 import {url} from '../config/config'
+import {Contexts} from './../context/Contexts'
 
 function MessagesForm() {
+  const {user,logged} = useContext(Contexts)
   const navigate=useNavigate();
   const [loading, setloading] = useState(false);
-  const {state:doclog} = useLocation();
   const [roommessage, setroommessage] = useState({
 
     fecha_sala : '', 
@@ -41,7 +41,7 @@ function MessagesForm() {
       let roommessageDNew={}  
       roommessageDNew = {
         ...roommessage,
-        dni_d: doclog.dni_d,
+        dni_d: user.dni_d,
       }
       setroommessage(roommessageDNew)
       await fetch(`${url}/salamensajes`,
@@ -55,7 +55,7 @@ function MessagesForm() {
 
 
       setloading(false);
-      navigate('/mensajes',{state:doclog})
+      navigate('/mensajes')
 
   }
   function obtenerFecha (){
@@ -76,25 +76,28 @@ function MessagesForm() {
    setroommessage({...roommessage,[e.target.name]: e.target.value});
   }
   useEffect(()=> {
-    loadPatients()
+    if (!logged) {
+      navigate('/')
+    }
+    else{
+      loadPatients()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
     
   return (
     <div>
-      <Navbar  dato={true}/>
-    
     <div className=" p-5 flex justify-center flex-col items-center">
         <div>
         <div className=" flex items-center gap-2 font-semibold text-xl font-[inter] py-3">
-        <BiMessageAdd size={40} color={"#1294B0"} ></BiMessageAdd>  
+        <BiMessageAdd size={40} color={"#3693E9"} ></BiMessageAdd>  
         Crear Nueva Conversación
         </div>
         <div className="box-table ">
         <form onSubmit={handleSubmit}>
           <div className="p-4 flex justify-center items-center flex-col px-56">
-          <BiMessageDetail size={120} color={"#1294B0"} ></BiMessageDetail>
+          <BiMessageDetail size={120} color={"#3693E9"} ></BiMessageDetail>
 
           <h1 className="p-3 text-base font-semibold tracking-wide text-center font-sans text-black" >Fecha de Creación</h1>
           <div className="mb-3 xl:w-96">
@@ -127,10 +130,10 @@ function MessagesForm() {
       
           </div>
           <div className="flex justify-between py-2">
-          <button className="bg-[#1294B0] hover:bg-blue-500 text-white font-bold py-2 px-10 rounded-full disabled:bg-gray-400" type="submit" disabled={!roommessage.dni_p} >
+          <button className="bg-[#3693E9] hover:bg-[#3fa2ff] text-white font-bold py-2 px-10 rounded-full disabled:bg-gray-400" type="submit" disabled={!roommessage.dni_p} >
           { loading ? "Cargando.." : "Guardar" }
           </button>
-          <button type="button" className="bg-[#1294B0] hover:bg-blue-500 text-white font-bold py-2 px-10 rounded-full" onClick={() => navigate('/mensajes')}>
+          <button type="button" className="bg-[#3693E9] hover:bg-[#3fa2ff] text-white font-bold py-2 px-10 rounded-full" onClick={() => navigate('/mensajes')}>
               Cancelar
           </button>
           </div>

@@ -1,6 +1,6 @@
 import React from 'react'
-import doctoresI from '../img/imgdoctores.png'
-import logo from '../img/Logo Principal.png'
+import doctoresI from '../img/imgdoctoresNew.png'
+import logo from '../img/LogoParaLanding.png'
 import { useNavigate } from 'react-router-dom'
 import {useState} from 'react'
 import {url} from '../config/config'
@@ -169,13 +169,13 @@ function RegisterDoctor() {
           </div>
           <div className="p-2 flex">
             <div className="p-1 flex justify-center flex-col items-center px-20">
-              <button type="submit" className="bg-[#1C1B25] hover:bg-[#1294B0] text-white font-bold py-2 px-10 rounded-full disabled:bg-gray-400" 
+              <button type="submit" className="bg-[#1C1B25] hover:bg-[#3693E9] text-white font-bold py-2 px-10 rounded-full disabled:bg-gray-400" 
                 disabled={!doctor.apellidos || !doctor.correo || !doctor.dni_d || !doctor.edad || !doctor.especialidad || !doctor.fecha_nacimiento
                 || !doctor.nombres || !doctor.password_d || !doctor.sexo || !doctor.telefono }>
               { loading ? "Cargando.." : "Registrarse" }</button>
             </div>
             <div className="p-1 flex justify-center flex-col items-center px-20">
-              <button type="button" className="bg-[#1C1B25] hover:bg-[#1294B0] text-white font-bold py-2 px-10 rounded-full" onClick={()=>navigate('/')} >Cancelar</button>
+              <button type="button" className="bg-[#1C1B25] hover:bg-[#3693E9] text-white font-bold py-2 px-10 rounded-full" onClick={()=>navigate('/')} >Cancelar</button>
             </div>
           </div>
       </div>

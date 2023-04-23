@@ -1,13 +1,13 @@
 import {BiInfoCircle,BiBell} from 'react-icons/bi'
-import {useNavigate,useLocation } from 'react-router-dom'
-import {useEffect,useState} from 'react'
-import Navbar from './Navbar'
+import {useNavigate } from 'react-router-dom'
+import {useEffect,useState,useContext} from 'react'
 import {url} from '../config/config'
+import {Contexts} from './../context/Contexts'
+
 function Notifications() {
+    const {logged} = useContext(Contexts)
     const navigate=useNavigate();
     const [notifications, setnotifications] = useState([])
-    const {state:doclog} = useLocation();
-    
     const loadNotifications= async ()=>{
       const response = await fetch(`${url}/alertas`)
       const data = await response.json()
@@ -17,22 +17,26 @@ function Notifications() {
 
 
     useEffect(()=>{
-      loadNotifications()
+      if (!logged) {
+        navigate('/')
+      }
+      else{
+        loadNotifications()
+      }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
   return (
     <div>
-      <Navbar/>
     <div className=" p-5 flex justify-center flex-col items-center">
       <div>
       <div className=" flex items-center gap-2 font-bold text-xl py-3">
-      <BiBell size={40} color={"#1294B0"} ></BiBell>  
+      <BiBell size={40} color={"#3693E9"} ></BiBell>  
       Notificaciones
       </div>
       <div className="box-table ">
         <div className="overflow-auto rounded-lg shadow ">
           <table>
-            <thead className="bg-[#1294B0] border-b-2 border-gray-200">
+            <thead className="bg-[#3693E9] border-b-2 border-gray-200">
               <tr>
                 <th className="p-3 text-base font-bold tracking-wide text-center text-white">Descripción</th>
                 <th className="p-3 text-base font-bold tracking-wide text-center text-white">Detalle</th>

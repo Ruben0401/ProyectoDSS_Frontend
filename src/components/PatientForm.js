@@ -1,19 +1,17 @@
-import React from 'react'
+import React,{useContext} from 'react'
 import {BiUser} from 'react-icons/bi'
 import {CgProfile} from 'react-icons/cg'
-import { useNavigate,useParams,useLocation } from 'react-router-dom'
+import { useNavigate,useParams } from 'react-router-dom'
 import {useState,useEffect} from 'react'
-import Navbar from './Navbar'
 import {url} from '../config/config'
+import {Contexts} from './../context/Contexts'
 
 function PatientForm() {
+    const {logged} = useContext(Contexts)
     const navigate=useNavigate();
-
     const params = useParams();
-
     const [loading, setloading] = useState(false);
     const [editing, setediting] = useState(false);
-    const {state:doclog} = useLocation();
     const [patient, setpatient] = useState({
 
       dni_p : '',
@@ -51,7 +49,7 @@ function PatientForm() {
       }
 
         setloading(false);
-        navigate('/pacientes',{state:doclog})
+        navigate('/pacientes')
 
     }
 
@@ -79,24 +77,28 @@ function PatientForm() {
 
     useEffect(()=> {
       if (params.dni) {
-        loadPatient(params.dni)
+        if (!logged) {
+          navigate('/')
+        }
+        else{
+          loadPatient(params.dni)
+        } 
       }
-      
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     },[params.dni])
 
   return (
     <div>
-      <Navbar dato={true}/>
     <div className=" p-5 flex justify-center flex-col items-center">
         <div>
         <div className=" flex items-center gap-2 font-semibold text-xl font-[inter] py-3">
-        <BiUser size={40} color={"#1294B0"} ></BiUser>  
+        <BiUser size={40} color={"#3693E9"} ></BiUser>  
         {editing ? "Modificar Paciente":"Formulario de Paciente"}
         </div>
         <div className="box-table ">
         <form onSubmit={handleSubmit}>
           <div className="p-4 flex justify-center items-center flex-col px-56">
-          <CgProfile size={120} color={"#1294B0"} ></CgProfile>
+          <CgProfile size={120} color={"#3693E9"} ></CgProfile>
 
           <h1 className="p-3 text-base font-semibold tracking-wide text-center font-sans text-black" >DNI</h1>
             <div className="relative mb-3 xl:w-96" >
@@ -208,12 +210,12 @@ function PatientForm() {
 
           </div>
           <div className="flex justify-between py-2">
-          <button className="bg-[#1294B0] hover:bg-blue-500 text-white font-bold py-2 px-10 rounded-full disabled:bg-gray-400" type="submit" 
+          <button className="bg-[#3693E9] hover:bg-[#3fa2ff] text-white font-bold py-2 px-10 rounded-full disabled:bg-gray-400" type="submit" 
           disabled={!patient.apellidos || !patient.correo || !patient.direccion || !patient.dni_p || !patient.edad || !patient.fecha_nacimiento
               || !patient.nombres || !patient.password_p || !patient.sexo || !patient.telefono  }>
             { loading ? "Cargando.." : "Guardar" }
           </button>
-          <button className="bg-[#1294B0] hover:bg-blue-500 text-white font-bold py-2 px-10 rounded-full" type="button" onClick={() => (window.history.back())}>
+          <button className="bg-[#3693E9] hover:bg-[#3fa2ff] text-white font-bold py-2 px-10 rounded-full" type="button" onClick={() => navigate('/pacientes')}>
               Cancelar
           </button>
           </div>

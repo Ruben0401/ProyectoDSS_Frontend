@@ -2,13 +2,15 @@ import React from 'react'
 import {BiLeftArrowCircle} from 'react-icons/bi'
 import ImgPaciente from '../img/AvatarPaciente.png'
 import ImgMedico from '../img/AvatarMedico.png'
-import {useLocation,useParams } from 'react-router-dom'
-import {useEffect,useState} from 'react'
-import Navbar from './Navbar'
+import {useLocation,useParams,useNavigate } from 'react-router-dom'
+import {useEffect,useState,useContext} from 'react'
 import {url} from '../config/config'
+import {Contexts} from './../context/Contexts'
 
 function MessagesDetail() {
-   const {state:{doclog,roommessage}} = useLocation();
+   const navigate = useNavigate();
+   const {user,logged} = useContext(Contexts)
+   const {state:roommessage} = useLocation();
    const [input, setInput] = useState('');
    const params = useParams();
    const [loading, setloading] = useState(false);
@@ -41,7 +43,7 @@ function MessagesDetail() {
         let messageNew={}  
         messageNew = {
           ...message,
-          dni_d:doclog.dni_d,
+          dni_d:user.dni_d,
           id_sala: roommessage.id_sala
         }
         setmessage(messageNew)
@@ -80,22 +82,26 @@ function MessagesDetail() {
       const response = await fetch(`${url}/mensajes/${id}`)
       const data = await response.json()
       setmessages(data)
+      console.log('actualizando')
     }
    useEffect(()=>{
-      loadPatient()
-      loadMessages()
-      let intervalID = setInterval(loadMessages, 1000);
-
-      return ()=>{
-          clearInterval(intervalID)
-          // cleanup
-      }
+      if (!logged) {
+         navigate('/')
+       }
+       else{
+         loadPatient()
+         loadMessages()
+         let intervalID = setInterval(loadMessages, 1000);
+         return ()=>{
+            clearInterval(intervalID)
+            // cleanup
+        }
+       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
   return (
    <div>
-      <Navbar dato={true}/>
     <div className=" p-5 flex justify-center flex-col items-center">
     <div>
     <div className=" flex items-center gap-2 py-2">
@@ -108,7 +114,7 @@ function MessagesDetail() {
           <div>
           </div>
           <button onClick={() => (window.history.back())}>
-            <BiLeftArrowCircle size={40} color={"#1294B0"} ></BiLeftArrowCircle>
+            <BiLeftArrowCircle size={40} color={"#3693E9"} ></BiLeftArrowCircle>
           </button>
       </div>
       <div className="p-4 flex justify-center items-center flex-col px-20">
@@ -143,7 +149,7 @@ function MessagesDetail() {
            />
            <div>
               <button type="submit" className="inline-flex items-center justify-center rounded-lg px-4 py-3 transition duration-500 ease-in-out text-white 
-               bg-[#1294B0] hover:bg-blue-400 focus:outline-none disabled:bg-gray-400" disabled={!input}  >
+               bg-[#3693E9] hover:bg-blue-400 focus:outline-none disabled:bg-gray-400" disabled={!input}  >
                  <span className="font-bold">{ loading ? "Cargando.." : "Enviar" }</span>
                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-6 w-6 ml-2 transform rotate-90">
                     <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>

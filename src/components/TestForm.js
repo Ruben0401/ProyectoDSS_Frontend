@@ -2,13 +2,13 @@ import React from 'react'
 import {BiTestTube} from 'react-icons/bi'
 import {SiMinetest} from 'react-icons/si'
 import { useNavigate,useParams,useLocation } from 'react-router-dom'
-import {useState,useEffect} from 'react'
-import Navbar from './Navbar'
+import {useState,useEffect,useContext} from 'react'
 import {url} from '../config/config'
+import {Contexts} from './../context/Contexts'
 
 function TestForm() {
+    const {logged} = useContext(Contexts)
     const navigate=useNavigate();
-    const tab = <>&nbsp;</>;
     const params = useParams();
     const [loading, setloading] = useState(false);
     const [editing, setediting] = useState(false);
@@ -19,7 +19,7 @@ function TestForm() {
       laboratorio : '', 
       resultado : '', 
     }) 
-    const {state:{patient,doclog}} = useLocation();
+    const {state:patient} = useLocation();
 
     const loadTest = async()=>{
       let id = params.id
@@ -39,7 +39,8 @@ function TestForm() {
       }else{
         testNew = {
           ...test,
-          dni_p: patient.dni_p
+          dni_p: patient.dni_p,
+          tipo_prueba:'COVID-19',
         }
       }
       settest(testNew)
@@ -66,7 +67,7 @@ function TestForm() {
         })
       }
       setloading(false);
-      navigate('/pruebas/',{state:{patient,doclog}})
+      navigate('/pruebas/',{state:patient})
 
     }
 
@@ -76,24 +77,27 @@ function TestForm() {
     }
 
     useEffect(()=> {
-      loadTest();
+      if (!logged) {
+        navigate('/')
+      }
+      else{
+        loadTest()
+      }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
   return (
     <div>
-      <Navbar dato={true}/>
-    
     <div className=" p-5 flex justify-center flex-col items-center">
     <div>
     <div className=" flex items-center gap-2 font-semibold text-xl font-[inter] py-3">
-    <BiTestTube size={40} color={"#1294B0"} ></BiTestTube>  
+    <BiTestTube size={40} color={"#3693E9"} ></BiTestTube>  
     {editing ? "Modificar Prueba":"Formulario de Registro de Pruebas"}
     </div>
     <div className="box-table">
     <form onSubmit={handleSubmit}>
       <div className="p-4 flex justify-center items-center flex-col px-56">
-      <SiMinetest size={120} color={"#1294B0"} ></SiMinetest>
+      <SiMinetest size={120} color={"#3693E9"} ></SiMinetest>
 
       <h1 className="p-3 text-base font-semibold tracking-wide text-center font-sans text-black" >Fecha de Prueba</h1>
       <div className="mb-3 xl:w-96">
@@ -112,7 +116,7 @@ function TestForm() {
              ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-black
            dark:placeholder:text-black [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0 overflow-auto shadow"
             name="dni_p" onChange={handleChange} value={test.dni_p} required disabled>
-              <option value={patient.dni_p}>{patient.nombres}{tab}{patient.apellidos}</option>
+              <option value={patient.dni_p}>{patient.nombres} {patient.apellidos}</option>
             </select>
           </div>
         </div>
@@ -123,10 +127,8 @@ function TestForm() {
             <select className="peer block min-h-[auto] w-full rounded-lg border-0 bg-gray-100 py-[0.32rem] px-3 leading-[1.6] outline-none transition-all duration-200 
              ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-black
            dark:placeholder:text-black [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0 overflow-auto shadow"
-              name="tipo_prueba" onChange={handleChange} value={test.tipo_prueba} required>
-              <option value=""> -- Selecciona Enfermedad -- </option>
+              name="tipo_prueba" onChange={handleChange} value={test.tipo_prueba} required disabled>
               <option value="COVID-19">COVID-19</option>
-              <option value="Viruela del Mono">Viruela del Mono</option>
             </select>
           </div>
         </div>
@@ -159,11 +161,11 @@ function TestForm() {
   
       </div>
       <div className="flex justify-between py-2">
-      <button type="submit" className="bg-[#1294B0] hover:bg-blue-500 text-white font-bold py-2 px-10 rounded-full disabled:bg-gray-400"  
-        disabled={!test.fecha_prueba || !test.laboratorio || !test.resultado || !test.tipo_prueba  }>
+      <button type="submit" className="bg-[#3693E9] hover:bg-[#3fa2ff] text-white font-bold py-2 px-10 rounded-full disabled:bg-gray-400"  
+        disabled={!test.fecha_prueba || !test.laboratorio || !test.resultado  }>
       { loading ? "Cargando.." : "Guardar" }
       </button>
-      <button type="button" className="bg-[#1294B0] hover:bg-blue-500 text-white font-bold py-2 px-10 rounded-full" onClick={() => (window.history.back())}>
+      <button type="button" className="bg-[#3693E9] hover:bg-[#3fa2ff] text-white font-bold py-2 px-10 rounded-full" onClick={() => (window.history.back())}>
           Cancelar
       </button>
       </div>
