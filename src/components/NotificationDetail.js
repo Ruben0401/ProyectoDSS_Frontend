@@ -6,6 +6,7 @@ import Map from '../components/Map'
 import {url} from '../config/config'
 import {Contexts} from './../context/Contexts'
 function NotificationDetail() {
+    const tab = '\u00A0';
     const navigate = useNavigate();
     const {logged} = useContext(Contexts)
     const {state:notification} = useLocation();
@@ -67,7 +68,7 @@ function NotificationDetail() {
         </div>
         <div className="py-5">
             <div className=" flex font-medium text-xl ">
-                El paciente {pacienteS} se puso en contacto cercano con paciente {pacienteI} a las {horaactual} Horas el dia {fechaactual}
+                El paciente{tab}<h1 className='text-green-600'>{pacienteS}</h1>{tab}se puso en contacto cercano con paciente{tab}<h1 className='text-red-600'>{pacienteI}</h1>{tab}a las {horaactual} Horas el dia {fechaactual}
             </div>
             <br>
             </br>
@@ -75,7 +76,7 @@ function NotificationDetail() {
                 Resultado:
             </div>
             <div className=" flex font-medium text-xl ">
-                El paciente {pacienteS} puede contraer la enfermedad del paciente {pacienteI}
+                El paciente{tab}<h1 className='text-green-600'>{pacienteS}</h1>{tab}puede contraer la enfermedad del paciente{tab}<h1 className='text-red-600'>{pacienteI}</h1>{tab}
             </div>
         </div>
         <div className="w-full">

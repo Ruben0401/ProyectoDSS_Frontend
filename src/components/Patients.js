@@ -6,7 +6,7 @@ import {url} from '../config/config'
 import {Contexts} from './../context/Contexts'
 
 function Patients() {
-    const {logged} = useContext(Contexts)
+    const {user,logged} = useContext(Contexts)
     const navigate=useNavigate();
     const [patients, setpatients] = useState([])
     const loadPatients= async ()=>{
@@ -21,6 +21,13 @@ function Patients() {
       })
       setpatients(patients.filter(patient => patient.dni_p !==dni))
     }
+    const handleFilterDoctorxPatient=async (dni) =>{
+      setpatients(patients.filter(patient => patient.dni_d ===dni))
+    }
+    const handleFilterAll=async () =>{
+      loadPatients()
+    }
+
 
     useEffect(()=>{
       if (!logged) {
@@ -45,10 +52,10 @@ function Patients() {
           <BiPlusCircle size={40} color={"#3693E9"} ></BiPlusCircle>
         </button>
         <div>
-        <button type="button" className="bg-[#3693E9] hover:bg-[#3fa2ff] text-white font-bold py-2 px-10 rounded-full" >
+        <button type="button" className="bg-[#3693E9] hover:bg-[#3fa2ff] text-white font-bold py-2 px-10 rounded-full"  onClick={()=> handleFilterAll()} >
           Todos
         </button>
-        <button type="button" className="bg-[#3693E9] hover:bg-[#3fa2ff] text-white font-bold py-2 px-6 rounded-full " >
+        <button type="button" className="bg-[#3693E9] hover:bg-[#3fa2ff] text-white font-bold py-2 px-6 rounded-full " onClick={()=> handleFilterDoctorxPatient(user.dni_d)} >
           Asignados
         </button>
         </div>
