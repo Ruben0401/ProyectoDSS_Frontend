@@ -7,10 +7,9 @@ import {url} from '../config/config'
 
 function RegisterDoctor() {
   const navigate=useNavigate();
-
-
+  const [wronglog, setwronglog] = useState(false);
+  const [errortxt, seterrortxt] = useState();
   const [loading, setloading] = useState(false);
-
   const [doctor, setdoctor] = useState({
 
     dni_d : '',
@@ -30,24 +29,40 @@ function RegisterDoctor() {
     e.preventDefault();
 
     setloading(true);
-
-
-      await fetch(`${url}/doctores`,
+    const resemail = await fetch(`${url}/doctores/email`,
+    {
+        method:'POST',
+        headers: {'Content-type':'application/json'},
+        body: JSON.stringify(doctor),
+    })
+    const {status}=resemail
+    if (status===200) {
+      seterrortxt('Correo electrónico ya existe')
+      setwronglog(true);
+    } else {
+      const res = await fetch(`${url}/doctores`,
       {
-
           method:'POST',
           headers: {'Content-type':'application/json'},
           body: JSON.stringify(doctor),
       })
-      
-
-      setloading(false);
-      navigate('/')
+      const data = await res.json()
+      if (data.message) {
+        seterrortxt('DNI ya existe')
+        setwronglog(true);
+      }
+      else{
+        navigate('/')
+      }
+    }
+    setloading(false);
+    
 
   }
 
   const handleChange = e=>{
     setdoctor({...doctor,[e.target.name]: e.target.value});
+    setwronglog(false)
   }
 
   return (
@@ -166,6 +181,10 @@ function RegisterDoctor() {
               <input type="checkbox" name="check" className="accent-blue-400 " required/> Acepto los Términos y Condiciones
             </label>
             </div>
+            {
+             !wronglog ?<></>:
+              <h1 className="font-semibold text-base text-center text-red-600 px-1" >{errortxt}</h1>
+            }
           </div>
           <div className="p-2 flex">
             <div className="p-1 flex justify-center flex-col items-center px-20">
