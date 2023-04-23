@@ -25,8 +25,8 @@ function NotificationDetail() {
       data.sort(function(a, b){
         return a.id_detallealerta - b.id_detallealerta;
       });
-      setfechaactual(fechita.toLocaleDateString())
-      sethoraactual(fechita.toLocaleTimeString())
+      setfechaactual(fechita.toLocaleDateString('en-GB'))
+      sethoraactual(fechita.toLocaleTimeString('en-US'))
       const dato = await loadPatient(data[1].dni_p)
       const datoS = await loadPatient(data[0].dni_p)
       setpacienteI(dato)
@@ -68,7 +68,7 @@ function NotificationDetail() {
         </div>
         <div className="py-5">
             <div className=" flex font-medium text-xl ">
-                El paciente{tab}<h1 className='text-green-600'>{pacienteS}</h1>{tab}se puso en contacto cercano con paciente{tab}<h1 className='text-red-600'>{pacienteI}</h1>{tab}a las {horaactual} Horas el dia {fechaactual}
+                El paciente{tab}<h1 className='text-green-600'>{pacienteS}</h1>{tab}se puso en contacto cercano con paciente{tab}<h1 className='text-red-600'>{pacienteI}</h1>{tab}a las {horaactual} el dia {fechaactual}
             </div>
             <br>
             </br>

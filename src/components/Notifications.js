@@ -46,7 +46,7 @@ function Notifications() {
               {
                 notifications.map((notification)=>(
                   <tr className="bg-white" key={notification.id_alerta}>
-                  <td className="p-3 text-base text-black tracking-wide text-center items-center font-semibold">El Paciente {notification.descripcion} se relacionó con un usuario contagiado</td>
+                  <td className="p-3 text-base text-black tracking-wide text-center items-center font-semibold">El Paciente {notification.descripcion} se relacionó con un usuario contagiado el dia {new Date(notification.fecha).toLocaleDateString('en-GB')} a las {new Date(notification.fecha).toLocaleTimeString('en-US')}</td>
                   <td className="p-3">
                   <div className="flex items-center justify-center">
                     <button onClick={()=>navigate(`/notificaciones/${notification.id_alerta}`,{state:notification})} > <BiInfoCircle size={30}></BiInfoCircle> </button>
