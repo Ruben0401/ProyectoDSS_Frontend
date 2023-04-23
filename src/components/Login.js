@@ -50,7 +50,6 @@ function Login() {
         navigate('/principal')
       }
       else {
-        console.log("nada")
         setwronglog(true)
       }
       setloading(false);

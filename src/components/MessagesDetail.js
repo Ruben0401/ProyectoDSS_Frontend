@@ -82,7 +82,6 @@ function MessagesDetail() {
       const response = await fetch(`${url}/mensajes/${id}`)
       const data = await response.json()
       setmessages(data)
-      console.log('actualizando')
     }
    useEffect(()=>{
       if (!logged) {
